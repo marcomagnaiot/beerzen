@@ -1,0 +1,115 @@
+.contact-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.contact-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-avatar {
+  width: 80px;
+  height: 80px;
+  background: rgba(255, 255, 255, 0.2);
+  border: 3px solid white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2em;
+  font-weight: bold;
+  color: white;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.contact-name {
+  margin: 0 0 10px 0;
+  color: #333;
+  font-size: 1.3em;
+}
+
+.contact-empresa {
+  margin: 0 0 12px 0;
+  color: #667eea;
+  font-weight: 600;
+  font-size: 0.95em;
+}
+
+.contact-detail {
+  margin: 8px 0;
+  color: #666;
+  font-size: 0.9em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.contact-notes {
+  margin: 12px 0 0 0;
+  padding: 12px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  color: #666;
+  font-size: 0.9em;
+  font-style: italic;
+  display: flex;
+  gap: 8px;
+}
+
+.icon {
+  flex-shrink: 0;
+}
+
+.card-actions {
+  display: flex;
+  border-top: 1px solid #e0e0e0;
+}
+
+.card-actions button {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  background: white;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.edit-button {
+  color: #667eea;
+  border-right: 1px solid #e0e0e0;
+}
+
+.edit-button:hover {
+  background: #f0f2ff;
+}
+
+.delete-button {
+  color: #dc3545;
+}
+
+.delete-button:hover {
+  background: #fff5f5;
+}
