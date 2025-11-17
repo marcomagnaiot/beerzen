@@ -5,6 +5,51 @@ import './LoginPage.css'
 function LoginPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+  const [isSignUp, setIsSignUp] = useState(false)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [name, setName] = useState('')
+
+  const handleEmailAuth = async (e) => {
+    e.preventDefault()
+
+    try {
+      setLoading(true)
+      setError(null)
+
+      if (isSignUp) {
+        // Registro
+        const { data, error } = await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            data: {
+              name: name,
+            },
+          },
+        })
+
+        if (error) throw error
+
+        if (data.user) {
+          alert('¡Registro exitoso! Por favor verifica tu email para activar tu cuenta.')
+        }
+      } else {
+        // Login
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        })
+
+        if (error) throw error
+      }
+    } catch (error) {
+      console.error('Error en autenticación:', error)
+      setError(error.message)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const handleGoogleLogin = async () => {
     try {
@@ -36,13 +81,72 @@ function LoginPage() {
         </div>
 
         <div className="login-content">
-          <p className="welcome-text">Bienvenido! Inicia sesión para continuar</p>
+          <p className="welcome-text">
+            {isSignUp ? '¡Crea tu cuenta!' : '¡Bienvenido! Inicia sesión para continuar'}
+          </p>
 
           {error && (
             <div className="error-message">
               <p>{error}</p>
             </div>
           )}
+
+          {/* Formulario de Email/Password */}
+          <form className="email-form" onSubmit={handleEmailAuth}>
+            {isSignUp && (
+              <div className="form-group">
+                <label htmlFor="name">Nombre</label>
+                <input
+                  type="text"
+                  id="name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Tu nombre"
+                  required={isSignUp}
+                />
+              </div>
+            )}
+
+            <div className="form-group">
+              <label htmlFor="email">Email</label>
+              <input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="tu@email.com"
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="password">Contraseña</label>
+              <input
+                type="password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
+                required
+                minLength={6}
+              />
+            </div>
+
+            <button type="submit" className="submit-button" disabled={loading}>
+              {loading ? (
+                <>
+                  <span className="button-spinner"></span>
+                  {isSignUp ? 'Registrando...' : 'Iniciando sesión...'}
+                </>
+              ) : (
+                <>{isSignUp ? 'Registrarse' : 'Iniciar Sesión'}</>
+              )}
+            </button>
+          </form>
+
+          <div className="divider">
+            <span>O continuar con</span>
+          </div>
 
           <button
             className="google-button"
@@ -78,6 +182,16 @@ function LoginPage() {
               </>
             )}
           </button>
+
+          <div className="toggle-auth">
+            <button
+              type="button"
+              className="toggle-button"
+              onClick={() => setIsSignUp(!isSignUp)}
+            >
+              {isSignUp ? '¿Ya tienes cuenta? Inicia sesión' : '¿No tienes cuenta? Regístrate'}
+            </button>
+          </div>
         </div>
 
         <div className="login-footer">
