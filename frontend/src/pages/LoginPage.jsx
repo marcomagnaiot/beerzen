@@ -56,23 +56,14 @@ function LoginPage() {
       setLoading(true)
       setError(null)
 
-      // SOLUCIÓN: Construir el URL de OAuth manualmente con apikey como query parameter
-      // Esto es necesario porque Kong (API Gateway de Supabase) requiere apikey,
-      // pero los redirects del browser no envían custom headers.
-      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
-      const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
-      const redirectTo = window.location.origin + '/dashboard'
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/dashboard`,
+        },
+      })
 
-      // Construir URL de autorización con apikey incluido
-      const authUrl = new URL(`${supabaseUrl}/auth/v1/authorize`)
-      authUrl.searchParams.set('provider', 'google')
-      authUrl.searchParams.set('redirect_to', redirectTo)
-      authUrl.searchParams.set('apikey', anonKey)
-
-      console.log('Redirecting to OAuth URL:', authUrl.toString())
-
-      // Redirigir al usuario
-      window.location.href = authUrl.toString()
+      if (error) throw error
 
     } catch (error) {
       console.error('Error logging in:', error)
